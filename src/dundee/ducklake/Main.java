@@ -5,12 +5,12 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static final String fileName1 = "a_example";
-    public static final String fileName2 = "b_read_on";
-    public static final String fileName3 = "c_incunabula";
-    public static final String fileName4 = "d_tough_choices";
-    public static final String fileName5 = "e_so_many_books";
-    public static final String fileName6 = "f_libraries_of_the_world";
+    public static final String fileName1 = "a_example.txt";
+    public static final String fileName2 = "b_read_on.txt";
+    public static final String fileName3 = "c_incunabula.txt";
+    public static final String fileName4 = "d_tough_choices.txt";
+    public static final String fileName5 = "e_so_many_books.txt";
+    public static final String fileName6 = "f_libraries_of_the_world.txt";
 
     int numBook;
 
@@ -20,42 +20,55 @@ public class Main {
 
     int[] books;
 
+    Library[] libraries;
+
     public static void main(String[] args) {
+        Main main = new Main();
+        main.loadTextFile(fileName1);
 
     }
 
-    private String loadTextFile(String fileName) {
+    public void loadTextFile(String fileName) {
         String file = "";
-        BufferedReader bufferedReader = null;
+        Scanner scanner = null;
 
         // Try to read every line of the file
         try {
-            bufferedReader = new BufferedReader(new FileReader(fileName));
-            while (bufferedReader.ready()) {
-                file = file.concat(bufferedReader.readLine()).concat("\n");
+            scanner = new Scanner(new FileReader(fileName));
+            numBook = scanner.nextInt();
+            numLib = scanner.nextInt();
+            days = scanner.nextInt();
+            books = new int[numBook];
+//            scanner.nextLine();
+            for (int i = 0; i < numBook; i++) {
+                books[i] = scanner.nextInt();
+            }
+            libraries = new Library[numLib];
+            for (int i = 0; i < numLib; i++) {
+//                scanner.nextLine();
+                libraries[i] = new Library(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+                int[] books = new int[libraries[i].numBooks];
+//                scanner.nextLine();
+                for (int j = 0; j < libraries[i].numBooks; j++) {
+                    books[j] = scanner.nextInt();
+                }
+                libraries[i].books = books;
             }
         }
 
         // Catch errors
         catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Error during reading the file: " + e.getMessage());
-            file = null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Close reader
         finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    System.out.println("Error closing file: " + e.getMessage());
-                }
+            if (scanner != null) {
+                scanner.close();
             }
         }
-
-        return file;
     }
 
     /**
