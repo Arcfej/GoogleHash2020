@@ -10,8 +10,7 @@ public class Library {
 
     public int booksPerDay;
 
-    public Library(Book[] books, int numBooks, int signupDays, int booksPerDay) {
-        this.books = books;
+    public Library(int numBooks, int signupDays, int booksPerDay) {
         this.numBooks = numBooks;
         this.signupDays = signupDays;
         this.booksPerDay = booksPerDay;
@@ -21,7 +20,7 @@ public class Library {
     {
     	for(int i=0; i<numBooks; i++)
     	{
-    		if(books[i]==bookID)
+    		if(books[i].getID() == bookID)
     		{
     			for(int j=i; j<numBooks-1; j++)
     			{
@@ -39,11 +38,11 @@ public class Library {
     
     public void arrangeBooksByScore()
     {
-    	for(int i=0; i<numberOfBooks-1; i++)
+    	for(int i=0; i<numBooks-1; i++)
     	{
     		int maxScore = books[i].getScore();
     		int index=i;
-    		for(int j=i; j<numberOfBooks; j++)
+    		for(int j=i; j<numBooks; j++)
     		{
     			if(books[j].getScore()>books[i].getScore())
     			{

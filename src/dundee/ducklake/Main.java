@@ -12,19 +12,27 @@ public class Main {
     public static final String fileName5 = "e_so_many_books.txt";
     public static final String fileName6 = "f_libraries_of_the_world.txt";
 
+    public static final String outputA = "a_output.txt";
+    public static final String outputB = "b_output.txt";
+    public static final String outputC = "c_output.txt";
+    public static final String outputD = "d_output.txt";
+    public static final String outputE = "e_output.txt";
+    public static final String outputF = "f_output.txt";
+
     int numBook;
 
     int numLib;
 
     int days;
 
-    int[] books;
+    int[] scores;
 
     Library[] libraries;
 
     public static void main(String[] args) {
         Main main = new Main();
         main.loadTextFile(fileName1);
+        System.out.println();
 
     }
 
@@ -38,19 +46,17 @@ public class Main {
             numBook = scanner.nextInt();
             numLib = scanner.nextInt();
             days = scanner.nextInt();
-            books = new int[numBook];
-//            scanner.nextLine();
+            scores = new int[numBook];
             for (int i = 0; i < numBook; i++) {
-                books[i] = scanner.nextInt();
+                scores[i] = scanner.nextInt();
             }
             libraries = new Library[numLib];
             for (int i = 0; i < numLib; i++) {
-//                scanner.nextLine();
                 libraries[i] = new Library(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
-                int[] books = new int[libraries[i].numBooks];
-//                scanner.nextLine();
+                Book[] books = new Book[libraries[i].numBooks];
                 for (int j = 0; j < libraries[i].numBooks; j++) {
-                    books[j] = scanner.nextInt();
+                    int id = scanner.nextInt();
+                    books[j] = new Book(id, scores[id]);
                 }
                 libraries[i].books = books;
             }
@@ -71,11 +77,6 @@ public class Main {
         }
     }
 
-    /**
-     * Ask for lines from the user and save them in a txt file.
-     *
-     * @param in the input stream through the user type in their texts.
-     */
     private void writeToFile(Scanner in) {
         final String USER_INPUT_FILE_PATH = "input.txt";
 

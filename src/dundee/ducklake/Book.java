@@ -1,3 +1,4 @@
+package dundee.ducklake;
 
 public class Book {
 
@@ -8,12 +9,6 @@ public class Book {
 	{
 		this.ID = ID;
 		this.score = score;
-	}
-	
-	public Book()
-	{
-		ID=0;
-		score=0;
 	}
 	
 	public int getID()
