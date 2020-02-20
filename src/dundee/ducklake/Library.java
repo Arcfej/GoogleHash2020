@@ -15,4 +15,24 @@ public class Library {
         this.signupDays = signupDays;
         this.booksPerDay = booksPerDay;
     }
+
+    public void removeBookFromList(int bookID)
+    {
+    	for(int i=0; i<numBooks; i++)
+    	{
+    		if(books[i]==bookID)
+    		{
+    			for(int j=i; j<numBooks-1; j++)
+    			{
+    				books[j]=books[j+1];
+    			}
+    			numBooks--;
+    		}
+    	}
+    }
+
+    public void dayPassed()
+    {
+    	signupDays--;
+    }
 }
