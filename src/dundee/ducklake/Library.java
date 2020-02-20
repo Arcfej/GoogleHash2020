@@ -1,5 +1,9 @@
 package dundee.ducklake;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class Library {
 
 	public int id;
@@ -43,22 +47,23 @@ public class Library {
     
     public void sortBooksByScore()
     {
-    	for(int i=0; i < numBooks-1; i++)
-    	{
-    		int maxScore = books[i].getScore();
-    		int index = i;
-    		for(int j=i+1; j<numBooks; j++)
-    		{
-    			if(maxScore < books[j].getScore())
-    			{
-    				maxScore  = books[j].getScore();
-    				index=j;
-    			}
-    		}
-    		Book temp = books[i];
-    		books[i].changeIDandScore(books[index].getID(), books[index].getScore());
-    		books[index].changeIDandScore(temp.getID(), temp.getScore());
-    	}
+    	Arrays.sort(books, Collections.reverseOrder(Comparator.comparingDouble(book -> book.score)));
+//    	for(int i=0; i < numBooks-1; i++)
+//    	{
+//    		int maxScore = books[i].getScore();
+//    		int index = i;
+//    		for(int j=i+1; j<numBooks; j++)
+//    		{
+//    			if(maxScore < books[j].getScore())
+//    			{
+//    				maxScore  = books[j].getScore();
+//    				index=j;
+//    			}
+//    		}
+//    		Book temp = books[i];
+//    		books[i].changeIDandScore(books[index].getID(), books[index].getScore());
+//    		books[index].changeIDandScore(temp.getID(), temp.getScore());
+//    	}
     }
 
     public void calculateScore(int allDays) {

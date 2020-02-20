@@ -40,6 +40,56 @@ public class Main {
 
         List<Scan> scans = main.calculateOutput();
         main.writeToFile(outputA, scans);
+
+        main.loadTextFile(fileName2);
+        for (Library library : main.libraries) {
+            library.sortBooksByScore();
+            library.calculateScore(main.maxDays);
+        }
+        main.sortLibraries();
+
+        scans = main.calculateOutput();
+        main.writeToFile(outputB, scans);
+
+        main.loadTextFile(fileName3);
+        for (Library library : main.libraries) {
+            library.sortBooksByScore();
+            library.calculateScore(main.maxDays);
+        }
+        main.sortLibraries();
+
+        scans = main.calculateOutput();
+        main.writeToFile(outputC, scans);
+
+        main.loadTextFile(fileName4);
+        for (Library library : main.libraries) {
+            library.sortBooksByScore();
+            library.calculateScore(main.maxDays);
+        }
+        main.sortLibraries();
+
+        scans = main.calculateOutput();
+        main.writeToFile(outputD, scans);
+
+        main.loadTextFile(fileName5);
+        for (Library library : main.libraries) {
+            library.sortBooksByScore();
+            library.calculateScore(main.maxDays);
+        }
+        main.sortLibraries();
+
+        scans = main.calculateOutput();
+        main.writeToFile(outputE, scans);
+
+        main.loadTextFile(fileName6);
+        for (Library library : main.libraries) {
+            library.sortBooksByScore();
+            library.calculateScore(main.maxDays);
+        }
+        main.sortLibraries();
+
+        scans = main.calculateOutput();
+        main.writeToFile(outputF, scans);
     }
 
     public void loadTextFile(String fileName) {
@@ -94,6 +144,8 @@ public class Main {
         }
         average /= scores.length;
 
+        Set<Book> submitted = new HashSet<>(numBook);
+
         List<Scan> scans = new ArrayList<>();
 
         int remain = maxDays;
@@ -107,14 +159,19 @@ public class Main {
             Book book = library.books[0];
             for (int i = 0; i < library.booksPerDay; i++) {
                 try {
-                    book = library.books[bookIndex++];
+                    boolean scanned = true;
+                    while (scanned) {
+                        book = library.books[bookIndex++];
+                        scanned = submitted.contains(book);
+                    }
                     books.add(book);
+                    submitted.add(book);
                 } catch (IndexOutOfBoundsException e) {
                     break;
                 }
             }
             remain--;
-            if (book.score <= average || bookIndex == library.numBooks) {
+            if (bookIndex >= library.numBooks) {
                 scans.add(new Scan(library.id, books));
                 books = new ArrayList<>();
                 libIndex++;
@@ -126,6 +183,9 @@ public class Main {
                 bookIndex = 0;
             }
         }
+        if (books.size() != 0) {
+            scans.add(new Scan(library.id, books));
+        }
         return scans;
     }
 
@@ -136,6 +196,10 @@ public class Main {
             writer.println(scans.size());
             for (Scan scan : scans) {
                 writer.println(scan.libraryID + " " + scan.books.size());
+                for (Book book : scan.books) {
+                    writer.print(book.ID + " ");
+                }
+                writer.println();
             }
         } catch (FileNotFoundException | SecurityException e) {
             System.out.println("Access denied: " + e.getMessage());
