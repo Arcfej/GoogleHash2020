@@ -4,13 +4,14 @@ public class Library {
 
     public int numBooks;
 
-    public int[] books;
+    public Book[] books;
 
     public int signupDays;
 
     public int booksPerDay;
 
-    public Library(int numBooks, int signupDays, int booksPerDay) {
+    public Library(Book[] books, int numBooks, int signupDays, int booksPerDay) {
+        this.books = books;
         this.numBooks = numBooks;
         this.signupDays = signupDays;
         this.booksPerDay = booksPerDay;
@@ -34,5 +35,25 @@ public class Library {
     public void dayPassed()
     {
     	signupDays--;
+    }
+    
+    public void arrangeBooksByScore()
+    {
+    	for(int i=0; i<numberOfBooks-1; i++)
+    	{
+    		int maxScore = books[i].getScore();
+    		int index=i;
+    		for(int j=i; j<numberOfBooks; j++)
+    		{
+    			if(books[j].getScore()>books[i].getScore())
+    			{
+    				maxScore=books[j].getScore();
+    				index=j;
+    			}
+    		}
+    		Book temp = books[i];
+    		books[i].changeIDandScore(books[index].getID(), books[index].getScore());
+    		books[index].changeIDandScore(temp.getID(), temp.getScore());
+    	}
     }
 }
