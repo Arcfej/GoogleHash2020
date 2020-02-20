@@ -5,6 +5,13 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static final String fileName1 = "a_example";
+    public static final String fileName2 = "b_read_on";
+    public static final String fileName3 = "c_incunabula";
+    public static final String fileName4 = "d_tough_choices";
+    public static final String fileName5 = "e_so_many_books";
+    public static final String fileName6 = "f_libraries_of_the_world";
+
     int numBook;
 
     int numLib;
@@ -13,10 +20,8 @@ public class Main {
 
     int[] books;
 
-
-
     public static void main(String[] args) {
-        System.out.println("Hello DuckLake!");
+
     }
 
     private String loadTextFile(String fileName) {
