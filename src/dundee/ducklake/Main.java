@@ -1,6 +1,8 @@
 package dundee.ducklake;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
@@ -23,7 +25,7 @@ public class Main {
 
     int numLib;
 
-    int days;
+    int maxDays;
 
     int[] scores;
 
@@ -32,7 +34,11 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
         main.loadTextFile(fileName1);
-
+        for (Library library : main.libraries) {
+            library.sortBooksByScore();
+            library.calculateScore(main.maxDays);
+        }
+        main.sortLibraries();
 
     }
 
@@ -45,7 +51,7 @@ public class Main {
             scanner = new Scanner(new FileReader(fileName));
             numBook = scanner.nextInt();
             numLib = scanner.nextInt();
-            days = scanner.nextInt();
+            maxDays = scanner.nextInt();
             scores = new int[numBook];
             for (int i = 0; i < numBook; i++) {
                 scores[i] = scanner.nextInt();
@@ -75,6 +81,10 @@ public class Main {
                 scanner.close();
             }
         }
+    }
+
+    private void sortLibraries() {
+        Arrays.sort(libraries, Comparator.comparingDouble(library -> library.score));
     }
 
     private void writeToFile(String fileName, Scan[] scans) {

@@ -10,6 +10,8 @@ public class Library {
 
     public int booksPerDay;
 
+    public double score;
+
     public Library(int numBooks, int signupDays, int booksPerDay) {
         this.numBooks = numBooks;
         this.signupDays = signupDays;
@@ -36,17 +38,17 @@ public class Library {
     	signupDays--;
     }
     
-    public void arrangeBooksByScore()
+    public void sortBooksByScore()
     {
-    	for(int i=0; i<numBooks-1; i++)
+    	for(int i=0; i < numBooks-1; i++)
     	{
     		int maxScore = books[i].getScore();
-    		int index=i;
-    		for(int j=i; j<numBooks; j++)
+    		int index = i;
+    		for(int j=i+1; j<numBooks; j++)
     		{
-    			if(books[j].getScore()>books[i].getScore())
+    			if(maxScore < books[j].getScore())
     			{
-    				maxScore=books[j].getScore();
+    				maxScore  = books[j].getScore();
     				index=j;
     			}
     		}
@@ -55,4 +57,19 @@ public class Library {
     		books[index].changeIDandScore(temp.getID(), temp.getScore());
     	}
     }
+
+    public void calculateScore(int allDays) {
+    	double average = 0;
+		for (Book book : books) {
+			average += book.score;
+		}
+		average /= books.length;
+
+		int remainingDays = allDays - signupDays;
+		if (remainingDays > 0) {
+			score = remainingDays * average;
+		} else {
+			score = remainingDays;
+		}
+	}
 }
