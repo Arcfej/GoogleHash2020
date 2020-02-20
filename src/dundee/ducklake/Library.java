@@ -2,6 +2,8 @@ package dundee.ducklake;
 
 public class Library {
 
+	public int id;
+
     public int numBooks;
 
     public Book[] books;
@@ -12,7 +14,8 @@ public class Library {
 
     public double score;
 
-    public Library(int numBooks, int signupDays, int booksPerDay) {
+    public Library(int id, int numBooks, int signupDays, int booksPerDay) {
+		this.id = id;
         this.numBooks = numBooks;
         this.signupDays = signupDays;
         this.booksPerDay = booksPerDay;

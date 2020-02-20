@@ -1,9 +1,7 @@
 package dundee.ducklake;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -40,6 +38,8 @@ public class Main {
         }
         main.sortLibraries();
 
+        List<Scan> scans = main.calculateOutput();
+        main.writeToFile(outputA, scans);
     }
 
     public void loadTextFile(String fileName) {
@@ -58,7 +58,7 @@ public class Main {
             }
             libraries = new Library[numLib];
             for (int i = 0; i < numLib; i++) {
-                libraries[i] = new Library(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+                libraries[i] = new Library(i, scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
                 Book[] books = new Book[libraries[i].numBooks];
                 for (int j = 0; j < libraries[i].numBooks; j++) {
                     int id = scanner.nextInt();
@@ -84,16 +84,58 @@ public class Main {
     }
 
     private void sortLibraries() {
-        Arrays.sort(libraries, Comparator.comparingDouble(library -> library.score));
+        Arrays.sort(libraries, Collections.reverseOrder(Comparator.comparingDouble(library -> library.score)));
     }
 
-    private void writeToFile(String fileName, Scan[] scans) {
+    private List<Scan> calculateOutput() {
+        int average = 0;
+        for (int score : scores) {
+            average += score;
+        }
+        average /= scores.length;
+
+        List<Scan> scans = new ArrayList<>();
+
+        int remain = maxDays;
+        int libIndex = 0;
+        int bookIndex = 0;
+        Library library = libraries[libIndex];
+        remain -= library.signupDays;
+
+        List<Book> books = new ArrayList<>();
+        while (remain > 0) {
+            Book book = library.books[0];
+            for (int i = 0; i < library.booksPerDay; i++) {
+                try {
+                    book = library.books[bookIndex++];
+                    books.add(book);
+                } catch (IndexOutOfBoundsException e) {
+                    break;
+                }
+            }
+            remain--;
+            if (book.score <= average || bookIndex == library.numBooks) {
+                scans.add(new Scan(library.id, books));
+                books = new ArrayList<>();
+                libIndex++;
+                if (libIndex == libraries.length) {
+                    break;
+                }
+                library = libraries[libIndex];
+                remain -= library.signupDays;
+                bookIndex = 0;
+            }
+        }
+        return scans;
+    }
+
+    private void writeToFile(String fileName, List<Scan> scans) {
 
         // Try open or create a new file for writing
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(fileName))) {
-            writer.println(scans.length);
+            writer.println(scans.size());
             for (Scan scan : scans) {
-                writer.println(scan.libraryID + " " + scan.books.length);
+                writer.println(scan.libraryID + " " + scan.books.size());
             }
         } catch (FileNotFoundException | SecurityException e) {
             System.out.println("Access denied: " + e.getMessage());
